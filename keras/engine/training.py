@@ -1836,7 +1836,8 @@ class Model(Container):
 
     def train_on_batch(self, x, y,
                        sample_weight=None,
-                       class_weight=None):
+                       class_weight=None,
+                       check_array_lengths=True):
         """Runs a single gradient update on a single batch of data.
 
         # Arguments
@@ -1874,7 +1875,8 @@ class Model(Container):
         x, y, sample_weights = self._standardize_user_data(
             x, y,
             sample_weight=sample_weight,
-            class_weight=class_weight)
+            class_weight=class_weight,
+            check_array_lengths=check_array_lengths)
         if self.uses_learning_phase and not isinstance(K.learning_phase(), int):
             ins = x + y + sample_weights + [1.]
         else:
@@ -1961,7 +1963,8 @@ class Model(Container):
                       workers=1,
                       use_multiprocessing=False,
                       shuffle=True,
-                      initial_epoch=0):
+                      initial_epoch=0,
+                      check_array_lengths=True):
         """Trains the model on data generated batch-by-batch by a Python generator or an instance of `Sequence`.
 
         The generator is run in parallel to the model, for efficiency.
@@ -2228,7 +2231,8 @@ class Model(Container):
 
                     outs = self.train_on_batch(x, y,
                                                sample_weight=sample_weight,
-                                               class_weight=class_weight)
+                                               class_weight=class_weight,
+                                               check_array_lengths=check_array_lengths)
 
                     if not isinstance(outs, list):
                         outs = [outs]
